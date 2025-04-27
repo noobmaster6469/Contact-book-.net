@@ -1,0 +1,43 @@
+﻿@model List<ContactApp.Models.Contact>
+
+@{
+    ViewData["Title"] = "Contacts";
+
+    // Group contacts by first letter of Name (case-insensitive)
+    var groupedContacts = Model
+        .OrderBy(c => c.Name)
+        .GroupBy(c => c.Name.Substring(0, 1).ToUpper());
+}
+
+<h2>Contact List</h2>
+
+<a asp-action="Create" class="btn btn-primary mb-3">Add New Contact</a>
+
+@if (!Model.Any())
+{
+    <p>No contacts found.</p>
+}
+else
+{
+    foreach (var group in groupedContacts)
+    {
+        <h3>@group.Key</h3> <!-- Letter heading -->
+
+        <ul class="list-group mb-4">
+            @foreach (var contact in group)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>@contact.Name</strong><br />
+                        <small>@contact.Email | @contact.Phone</small>
+                    </div>
+                    <div>
+                        <a asp-action="Delete" asp-route-id="@contact.Id" class="btn btn-danger btn-sm">
+                            Delete
+                        </a>
+                    </div>
+                </li>
+            }
+        </ul>
+    }
+}

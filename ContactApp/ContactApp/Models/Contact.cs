@@ -14,6 +14,7 @@ namespace ContactApp.Models
         public string Email { get; set; }
 
         [Required]
+        [RegularExpression(@"^\d{7,15}$", ErrorMessage = "Phone must be numbers only, 7-15 digits.")]
         public string Phone { get; set; }
     }
 }
